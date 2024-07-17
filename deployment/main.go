@@ -9,19 +9,18 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/ping", pingHandler)
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("pong"))
+	})
 	http.HandleFunc("/paytax", taxHandler)
+
 	http.ListenAndServe(":8080", nil)
 }
 
-func pingHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("pong"))
-}
-
 var rdb = redis.NewClient(&redis.Options{
-	Addr:     "redis-service.learnk8s.svc.cluster.local:6379", // Redis server address
-	Password: "",               // No password set
-	DB:       0,                // Use default DB
+	Addr:     "redis-service.learnk8s.svc.cluster.local:6379",
+	Password: "",
+	DB:       0,
 })
 
 func taxHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +30,8 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var input struct {
-		ClientId string  `json:"client_id"`
-		Wage     float64 `json:"wage"`
+		EmployeeId string  `json:"employee_id"`
+		Wage       float64 `json:"wage"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&input)
 	if err != nil {
@@ -45,15 +44,15 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-    if input.ClientId == "" {
-        http.Error(w, "Client ID cannot be empty", http.StatusBadRequest)
-        return
-    }
+	if input.EmployeeId == "" {
+		http.Error(w, "Employee ID cannot be empty", http.StatusBadRequest)
+		return
+	}
 
 	tax := input.Wage * 0.30
 
 	// Store the calculated tax in Redis
-	err = rdb.HIncrByFloat(context.Background(), "unpaidtaxes", input.ClientId, tax).Err()
+	err = rdb.HIncrByFloat(context.Background(), "unpaidtaxes", input.EmployeeId, tax).Err()
 	if err != nil {
 		http.Error(w, "Failed to store in Redis", http.StatusInternalServerError)
 		return

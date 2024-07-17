@@ -2,8 +2,7 @@
 date: DD-MM-YYYY
 ---
 
-## Kubernetes in a shell
-
+# Kubernetes in a shell
 
 ### Stuff that I presume you know
 - CPU
@@ -17,4 +16,7 @@ date: DD-MM-YYYY
 ### Stuff that you should know before we start
 - Node
 - Cluster
+- `minikube`
+- `kubectl`
+- `k9s`
 

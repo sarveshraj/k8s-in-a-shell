@@ -2,12 +2,12 @@ import redis
 
 r = redis.Redis(host="redis-service.learnk8s.svc.cluster.local", port=6379, db=0, decode_responses=True)
 
-allUnpaidTaxes = r.hgetall("upaidtaxes")
+allUnpaidTaxes = r.hgetall("unpaidtaxes")
 
 
-def payTax(clientId: str, tax: float):
-    print(f"Paid tax: {tax} for client: {clientId}")
+def payTax(employeeId: str, tax: float):
+    print(f"Paid tax: {tax} for employee: {employeeId}")
 
 
-for clientId, tax in allUnpaidTaxes.items():
-    payTax(clientId, tax)
+for employeeId, tax in allUnpaidTaxes.items():
+    payTax(employeeId, tax)
