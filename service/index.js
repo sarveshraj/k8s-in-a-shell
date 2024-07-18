@@ -1,5 +1,4 @@
-import { createServer } from 'http'
-import fetch from 'fetch'
+const { createServer } = require('http')
 
 const contentTypeTextPlain = { 'Content-Type': 'text/plain' }
 
