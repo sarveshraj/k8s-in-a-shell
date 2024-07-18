@@ -12,3 +12,5 @@ def payTax(employeeId: str, tax: float):
 
 for employeeId, tax in allUnpaidTaxes.items():
     payTax(employeeId, tax)
+
+r.delete("unpaidtaxes")
