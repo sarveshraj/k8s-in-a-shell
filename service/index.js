@@ -47,12 +47,12 @@ const submitWageHandler = (req, res) => {
     const params = new URLSearchParams(body)
 
     try {
-      await fetch('server-service.learnk8s.svc.cluster.local:8080/paytax', {
+      await fetch('http://server-service.learnk8s.svc.cluster.local:8080/paytax', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           wage: params.get('wage'),
-          employee_id: params.get('employee_id')
+          employee_id: Number(params.get('employee_id'))
         }),
       })
       res.writeHead(200, contentTypeTextPlain)
