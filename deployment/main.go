@@ -35,7 +35,7 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&input)
 	if err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
+		http.Error(w, "Invalid input: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -54,7 +54,7 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 	// Store the calculated tax in Redis
 	err = rdb.HIncrByFloat(context.Background(), "unpaidtaxes", input.EmployeeId, tax).Err()
 	if err != nil {
-		http.Error(w, "Failed to store in Redis", http.StatusInternalServerError)
+		http.Error(w, "Failed to store in Redis: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
