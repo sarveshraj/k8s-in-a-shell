@@ -18,5 +18,6 @@ spec:
       containers:
         - name: server
           image: ghcr.io/sarveshraj/learnk8s/server:0.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
