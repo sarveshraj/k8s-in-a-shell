@@ -1,4 +1,5 @@
 const { createServer } = require('http')
+const { URLSearchParams } = require('url')
 
 const contentTypeTextPlain = { 'Content-Type': 'text/plain' }
 
@@ -43,11 +44,16 @@ const submitWageHandler = (req, res) => {
   })
 
   req.on('end', async () => {
+    const params = new URLSearchParams(body)
+
     try {
-      await fetch('server-service.learnk8s.svc.cluster.local:3000/paytax', {
+      await fetch('server-service.learnk8s.svc.cluster.local:8080/paytax', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: body,
+        body: JSON.stringify({
+          wage: params.get('wage'),
+          employee_id: params.get('employee_id')
+        }),
       })
       res.writeHead(200, contentTypeTextPlain)
       res.end('Wage saved successfully')
