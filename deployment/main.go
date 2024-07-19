@@ -18,7 +18,7 @@ func main() {
 }
 
 var rdb = redis.NewClient(&redis.Options{
-	Addr:     "redis-service.learnk8s.svc.cluster.local:6379",
+	Addr:     "redis-service.k8s-in-a-shell.svc.cluster.local:6379",
 	Password: "",
 	DB:       0,
 })

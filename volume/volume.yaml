@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: redis-data
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
 spec:
   accessModes:
     - ReadWriteOnce

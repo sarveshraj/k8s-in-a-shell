@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: worker-cronjob
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
   labels:
     app: worker
 spec:
@@ -13,6 +13,6 @@ spec:
         spec:
           containers:
             - name: worker
-              image: ghcr.io/sarveshraj/learnk8s/worker:0.1
+              image: ghcr.io/sarveshraj/k8s-in-a-shell/worker:0.1
               imagePullPolicy: Always
           restartPolicy: OnFailure

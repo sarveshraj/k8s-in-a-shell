@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: server-replicaset
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
   labels:
     app: server
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: ghcr.io/sarveshraj/learnk8s/server:0.1
+          image: ghcr.io/sarveshraj/k8s-in-a-shell/server:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

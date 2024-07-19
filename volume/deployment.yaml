@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-deployment
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
   labels:
     app: redis
 spec:

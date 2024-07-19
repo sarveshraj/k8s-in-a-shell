@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: server-hpa
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
-  namespace: learnk8s
+  namespace: k8s-in-a-shell
   labels:
     app: frontend
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/sarveshraj/learnk8s/frontend:0.1
+          image: ghcr.io/sarveshraj/k8s-in-a-shell/frontend:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

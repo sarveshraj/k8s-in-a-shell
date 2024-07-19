@@ -1,4 +1,4 @@
-module github.com/sarveshraj/learnk8s
+module github.com/sarveshraj/k8s-in-a-shell
 
 go 1.22.0
 
