@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"math"
 	"net/http"
 
-	"github.com/redis/go-redis/v9"
 	"log/slog"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -54,7 +56,7 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tax := input.Wage * 0.30
+	tax := math.Round(input.Wage * 30) / 100
 
 	// Store the calculated tax in Redis
 	err = rdb.HIncrByFloat(ctx, "unpaidtaxes", input.EmployeeId, tax).Err()
