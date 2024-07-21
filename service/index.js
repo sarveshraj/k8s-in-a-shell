@@ -47,7 +47,7 @@ const submitWageHandler = (req, res) => {
     const params = new URLSearchParams(body)
 
     try {
-      await fetch('http://server-service.k8s-in-a-shell.svc.cluster.local:8080/paytax', {
+      const payTaxRes = await fetch('http://server-service.k8s-in-a-shell.svc.cluster.local:8080/paytax', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -55,11 +55,16 @@ const submitWageHandler = (req, res) => {
           wage: Number(params.get('wage'))
         }),
       })
+
+      if (!payTaxRes.ok) {
+        throw new Error(await payTaxRes.text())
+      }
+
       res.writeHead(200, contentTypeTextPlain)
-      res.end('Wage saved successfully')
+      res.end('Wage submitted successfully')
     } catch (error) {
       res.writeHead(500, contentTypeTextPlain)
-      res.end(`Submission failed: ${error.message}`)
+      res.end(`Wage submission failed: ${error.message}`)
     }
   })
 }

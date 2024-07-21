@@ -1,11 +1,11 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 
 	"github.com/redis/go-redis/v9"
+	"log/slog"
 )
 
 func main() {
@@ -29,16 +29,21 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ctx := r.Context()
+
 	var input struct {
 		EmployeeId string  `json:"employee_id"`
 		Wage       float64 `json:"wage"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&input)
 	if err != nil {
+		slog.ErrorContext(ctx, "Failed to decode input", "error", err)
 		http.Error(w, "Invalid input: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	slog.InfoContext(ctx, "Successfully decoded input", "input", input)
+	
 	if input.Wage <= 0 {
 		http.Error(w, "Wage cannot be non-positive", http.StatusBadRequest)
 		return
@@ -52,8 +57,9 @@ func taxHandler(w http.ResponseWriter, r *http.Request) {
 	tax := input.Wage * 0.30
 
 	// Store the calculated tax in Redis
-	err = rdb.HIncrByFloat(context.Background(), "unpaidtaxes", input.EmployeeId, tax).Err()
+	err = rdb.HIncrByFloat(ctx, "unpaidtaxes", input.EmployeeId, tax).Err()
 	if err != nil {
+		slog.ErrorContext(ctx, "Failed to store in Redis", "error", err)
 		http.Error(w, "Failed to store in Redis: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
