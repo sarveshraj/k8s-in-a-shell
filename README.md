@@ -71,64 +71,64 @@ kubectl rollout undo deployment/server-deployment -n k8s-in-a-shell
 
 ### Volume
 
-1. Containers in a pod don't have access to persistent storage that continues to exist beyond the pod's lifecycle by default
+1. Containers in a pod don't have access to persistent storage that exists beyond the pod's lifecycle by default
 2. Containers in a pod don't share storage by default
 3. Volumes solve both these problems
 4. We will deploy redis to understand volumes
 5. Go through the persistent volume claim manifest `volume/volume.yaml`
 6. Understand that in the claim we are only requesting for storage of the specified configuration
-7. Go through redis's deployment manifest `volume/deployment.yaml`
-8. Notice and understand the relationship between `volumeMounts`, `volumes` and the volume manifest `volume/volume.yaml`
-9. Apply the volume and the deployment
+7. The storage itself is dynamically allocated
+8. Go through redis's deployment manifest `volume/deployment.yaml`
+9. Notice and understand the relationship between `volumeMounts`, `volumes` and the volume manifest `volume/volume.yaml`
+10. Apply the volume and the deployment
 ```bash
 kubectl apply -f volume/volume.yaml
 kubectl apply -f volume/deployment.yaml
 ```
-10. Shell into redis pod and set some data in redis
+11. Shell into redis pod and set some data in redis
 ```bash
 redis-cli
 set mykey myvalue
 ```
-11. Delete this pod
-12. K8s will automatically create a new pod
+12. Delete this pod and wait for K8s to create a new pod
 13. Shell into the new pod and attempt to get the data
 ```bash
 redis-cli
 get mykey
 ```
-14. Verify that the response is `myvalue`
+14. Verify that the response is `"myvalue"`
 
 ### Service
 
 1. A service is a way to expose workloads within and outside a K8s cluster
-2. Open `volume/service.yaml` and go through the service manifest
-3. This service is of type `ClusterIP` which is used to expose workloads within the cluster
-4. Apply the service
-```bash
-kubectl apply -f volume/service.yaml
-```
-5. Go through our frontend application code `service/index.js` - specifically its `ping` and `/` APIs
-6. Go through our frontend's service manifest `service/service.yaml`
-7. This is of type `LoadBalancer` which is used to expose workloads outside the cluster
-8. Apply the service
+2. Go through our frontend application code `service/index.js` - specifically its `ping` and `/` APIs
+3. Go through our frontend's service manifest `service/service.yaml`
+4. This is of type `LoadBalancer` which is used to expose workloads outside the cluster
+5. Apply the service
 ```bash
 kubectl apply -f service/service.yaml
 ```
-9. Expose the service external IP directly to the host operating system (your machine)
+6. Expose the service external IP directly to the host operating system (your machine)
 ```bash
 # in a new terminal window
 minikube tunnel
 ```
-10. Open `localhost:3000/ping` on your browser - you should see `pong`
-11. You can now access the frontend app outside the cluster!
+7. Open `localhost:3000/ping` on your browser - you should see `pong`
+8. You can now access the frontend app outside the cluster!
+9. Notice how redis is being used in `index.js`
+10. This is called a FQDN - read about it
+11. Open `volume/service.yaml` and go through the service manifest
+12. This service is of type `ClusterIP` which is used to expose workloads within the cluster
+13. Apply the service to expose redis
+```bash
+kubectl apply -f volume/service.yaml
+```
 
 ### Cron Job
 
 1. A cron job as the name suggests is used to run recurring workloads
 2. Go through the manifest at `cronjob/cronjob.yaml` - we call it worker
 3. Go through the cron job code `cronjob/main.py`
-4. Notice how we are accessing redis
-5. This is called a FQDN - read about it
 
 ### Stitching it all together
 
