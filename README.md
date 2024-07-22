@@ -101,8 +101,8 @@ get mykey
 ### Service
 
 1. A service is a way to expose workloads within and outside a K8s cluster
-2. Go through our frontend application code `service/index.js` - specifically its `ping` and `/` APIs
-3. Go through our frontend's service manifest `service/service.yaml`
+2. Go through the frontend application code `service/index.js` - specifically its `/ping` and `/` APIs
+3. Go through the frontend's service manifest `service/service.yaml`
 4. This is of type `LoadBalancer` which is used to expose workloads outside the cluster
 5. Apply the service
 ```bash
@@ -124,7 +124,7 @@ minikube tunnel
 kubectl apply -f volume/service.yaml
 ```
 
-### Cron Job
+### Cron job
 
 1. A cron job as the name suggests is used to run recurring workloads
 2. Go through the manifest at `cronjob/cronjob.yaml` - we call it worker
