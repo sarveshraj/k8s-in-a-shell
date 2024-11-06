@@ -17,4 +17,3 @@ date: DD-MM-YYYY
 - `minikube`
 - `kubectl`
 - `k9s`
-
